@@ -1,7 +1,6 @@
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:shruticontactapp/model/contact_list_model.dart';
+import 'package:shruticontactapp/bloc/bloc_provider.dart';
 import 'package:shruticontactapp/model/contact_model.dart';
 
 class AddNewContactScreen extends StatelessWidget {
@@ -32,8 +31,8 @@ class AddNewContactScreen extends StatelessWidget {
             Item(label: "home", value: _landlineController.text)
           ]);
 
-      Provider.of<ContactListModel>(context, listen: false)
-          .addContact(ContactModel(contactModel: contact));
+      final bloc = BlocProvider.of(context).bloc;
+      bloc.addContact(ContactModel(contactModel: contact));
       Navigator.of(context).pop();
     }
 

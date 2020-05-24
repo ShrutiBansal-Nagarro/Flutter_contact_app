@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:provider/provider.dart';
-import 'package:shruticontactapp/model/contact_list_model.dart';
+import 'package:shruticontactapp/bloc/bloc_provider.dart';
+import 'package:shruticontactapp/bloc/contact_bloc.dart';
 import 'package:shruticontactapp/screens/add_new_contact_screen.dart';
 import 'package:shruticontactapp/screens/contact_list_screen.dart';
 import 'package:shruticontactapp/screens/favorite_contact_screen.dart';
@@ -36,10 +36,8 @@ class MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider.value(value: ContactListModel()),
-      ],
+    return BlocProvider(
+      bloc: ContactBloc(),
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(

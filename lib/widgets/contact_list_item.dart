@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:shruticontactapp/model/contact_list_model.dart';
+import 'package:shruticontactapp/bloc/bloc_provider.dart';
 import 'package:shruticontactapp/model/contact_model.dart';
 import 'package:shruticontactapp/screens/update_contact_screen.dart';
 
@@ -11,16 +10,14 @@ class ContactListItem extends StatelessWidget {
 
   Widget build(BuildContext context) {
     void _deleteContact(ContactModel contact) {
-      Provider.of<ContactListModel>(
-        context,
-        listen: false,
-      ).deleteContact(contact);
+      final bloc = BlocProvider.of(context).bloc;
+      bloc.deleteContact(contact);
     }
 
     void _updateContact(ContactModel contact) {
       Navigator.of(context).pushNamed(
         UpdateContactScreen.routeName,
-        arguments: contact,
+        arguments: contact.contactModel.identifier,
       );
     }
 
@@ -51,7 +48,8 @@ class ContactListItem extends StatelessWidget {
             horizontal: 5,
           ),
           child: ListTile(
-            leading: (contact.contactModel.avatar != null && contact.contactModel.avatar.isNotEmpty)
+            leading: (contact.contactModel.avatar != null &&
+                    contact.contactModel.avatar.isNotEmpty)
                 ? CircleAvatar(
                     radius: 30,
                     backgroundImage: MemoryImage(contact.contactModel.avatar),
@@ -65,7 +63,9 @@ class ContactListItem extends StatelessWidget {
                       ),
                     ),
                   ),
-            title: Text(contact.contactModel.displayName ?? ''),
+            title: Text(contact.contactModel.givenName +
+                " " +
+                contact.contactModel.familyName),
             subtitle: contact.contactModel.phones != null &&
                     contact.contactModel.phones.isNotEmpty &&
                     contact.contactModel.phones.elementAt(0) != null

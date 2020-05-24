@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:shruticontactapp/model/contact_list_model.dart';
+import 'package:shruticontactapp/bloc/bloc_provider.dart';
+import 'package:shruticontactapp/model/contact_model.dart';
 import 'package:shruticontactapp/widgets/contact_app_Drawer.dart';
 import 'package:shruticontactapp/widgets/favorite_list_item.dart';
 
@@ -9,26 +9,28 @@ class FavoriteContactScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<ContactListModel>(
-      context,
-      listen: false,
-    );
+    final bloc = BlocProvider.of(context).bloc;
+    bloc.favoriteContacts();
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Favorite List'),
-      ),
-      drawer: ContactAppDrawer(),
-      body: Consumer<ContactListModel>(
-        builder: (_, contact, __) => contact.favoriteItems.length > 0
-            ? ListView.builder(
-                itemBuilder: (ctx, index) {
-                  return FavoriteListItem(contact.favoriteItems[index]);
-                },
-                itemCount: contact.favoriteItems.length,
-              )
-            : Center(child: Text("No Contact found")),
-      ),
-    );
+        appBar: AppBar(
+          title: Text('Favorite List'),
+        ),
+        drawer: ContactAppDrawer(),
+        body: StreamBuilder<List<ContactModel>>(
+            stream: bloc.getFavItemStream,
+            builder: (context, AsyncSnapshot<List<ContactModel>> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: Text("Loading"));
+              }
+              if (snapshot.hasData && snapshot.data.length > 0) {
+                return ListView.builder(
+                  itemBuilder: (ctx, index) =>
+                      FavoriteListItem(snapshot.data[index]),
+                  itemCount: snapshot.data.length,
+                );
+              }
+              return Center(child: Text("No Contact found"));
+            }));
   }
 }
