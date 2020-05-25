@@ -1,6 +1,14 @@
 # shruticontactapp
 
-Contact App
+Flutter Contact App
+- Bloc Pattern
+- Contact Api
+-fetch contacts from phone
+- Add new Contact
+- Update contact
+-Delete Contact
+-Mark as Favorite
+
 
 ## Getting Started
 
