@@ -50,9 +50,9 @@ class ContactBloc implements Bloc {
   }
 
   favoriteContacts() async {
-    List<ContactModel> favList = [];
-    favList = _contactList.where((prodItem) => prodItem.isFavorite).toList();
-    getFavItemSink.add(favList);
+    await Future.delayed(Duration(seconds:0));
+     getFavItemSink.add(
+        _contactList.where((contactItem) => contactItem.isFavorite).toList());
   }
 
   deleteContact(ContactModel deletedContact) async {
@@ -63,6 +63,13 @@ class ContactBloc implements Bloc {
   ContactModel findById(String id) {
     return _contactList
         .firstWhere((contact) => contact.contactModel.identifier == id);
+  }
+
+  void toggleFavoriteStatus(String id) {
+    ContactModel contactModel = _contactList
+        .firstWhere((contact) => contact.contactModel.identifier == id);
+    contactModel.isFavorite = !contactModel.isFavorite;
+    getContactItemSink.add(_contactList);
   }
 
   @override

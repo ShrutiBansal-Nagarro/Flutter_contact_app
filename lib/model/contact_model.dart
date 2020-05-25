@@ -1,14 +1,12 @@
 import 'package:contacts_service/contacts_service.dart';
-import 'package:flutter/cupertino.dart';
 
-class ContactModel with ChangeNotifier {
+class ContactModel {
   bool isFavorite;
   Contact contactModel;
 
-  ContactModel({this.contactModel, this.isFavorite=false});
+  ContactModel({this.contactModel, this.isFavorite = false});
 
   void toggleFavoriteStatus() {
     isFavorite = !isFavorite;
-    notifyListeners();
   }
 }

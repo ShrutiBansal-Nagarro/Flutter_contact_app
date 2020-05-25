@@ -33,7 +33,6 @@ class UpdateContactScreenState extends State<UpdateContactScreen> {
     if (_isInit) {
       var contactId =
           ModalRoute.of(context).settings.arguments as String; // is the id!
-
       contactModelUpdate = BlocProvider.of(context).bloc.findById(contactId);
       _initValues = {
         'firstName': contactModelUpdate.contactModel.givenName,
@@ -67,6 +66,7 @@ class UpdateContactScreenState extends State<UpdateContactScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = BlocProvider.of(context).bloc;
     return Scaffold(
         backgroundColor: Colors.white,
         floatingActionButton: FloatingActionButton(
@@ -78,7 +78,8 @@ class UpdateContactScreenState extends State<UpdateContactScreen> {
           ),
           onPressed: () {
             setState(() {
-              contactModelUpdate.toggleFavoriteStatus();
+              bloc.toggleFavoriteStatus(
+                  contactModelUpdate.contactModel.identifier);
             });
           },
         ),
